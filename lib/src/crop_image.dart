@@ -64,19 +64,27 @@ class CropImage extends StatefulWidget {
   /// Defaults to 100.
   final double minimumImageSize;
 
-  const CropImage({
-    Key? key,
-    this.controller,
-    required this.image,
-    this.gridColor = Colors.white70,
-    this.gridCornerSize = 25,
-    this.gridThinWidth = 2,
-    this.gridThickWidth = 5,
-    this.scrimColor = Colors.black54,
-    this.alwaysShowThirdLines = false,
-    this.onCrop,
-    this.minimumImageSize = 100,
-  })  : assert(gridCornerSize > 0, 'gridCornerSize cannot be zero'),
+  /// crop size change status
+  final bool isCropSizeChangable;
+
+  /// if isCropSizeChangable is false then this value will be used as crop size
+  final Size cropSize;
+
+  const CropImage(
+      {Key? key,
+      this.controller,
+      required this.image,
+      this.gridColor = Colors.white70,
+      this.gridCornerSize = 25,
+      this.gridThinWidth = 2,
+      this.gridThickWidth = 5,
+      this.scrimColor = Colors.black54,
+      this.alwaysShowThirdLines = false,
+      this.onCrop,
+      this.minimumImageSize = 100,
+      this.isCropSizeChangable = true,
+      this.cropSize = const Size(100, 100)})
+      : assert(gridCornerSize > 0, 'gridCornerSize cannot be zero'),
         assert(gridThinWidth > 0, 'gridThinWidth cannot be zero'),
         assert(gridThickWidth > 0, 'gridThickWidth cannot be zero'),
         assert(minimumImageSize > 0, 'minimumImageSize cannot be zero'),
@@ -138,8 +146,8 @@ class _CropImageState extends State<CropImage> {
     currentCrop = controller.crop;
 
     _stream = widget.image.image.resolve(const ImageConfiguration());
-    _streamListener = ImageStreamListener(
-        (info, _) => controller.image = info.image);
+    _streamListener =
+        ImageStreamListener((info, _) => controller.image = info.image);
     _stream.addListener(_streamListener);
   }
 
@@ -251,6 +259,9 @@ class _CropImageState extends State<CropImage> {
   }
 
   void moveCorner(_CornerTypes type, Offset point) {
+    if (!widget.isCropSizeChangable) {
+      return;
+    }
     final crop = controller.crop.multiply(size);
     var left = crop.left;
     var top = crop.top;

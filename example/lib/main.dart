@@ -27,8 +27,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final controller = CropController(
-    aspectRatio: 1,
-    defaultCrop: const Rect.fromLTRB(0.1, 0.1, 0.9, 0.9),
+    aspectRatio: 1.0,
+    defaultCrop: const Rect.fromLTRB(0.1, 0.1, 0.5, 0.5),
   );
 
   @override
@@ -36,13 +36,14 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: CropImage(
-              controller: controller,
-              image: Image.asset('assets/08272011229.jpg'),
-            ),
+        body: Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: CropImage(
+            alwaysShowThirdLines: false,
+            isCropSizeChangable: false,
+            cropSize: Size(50, 50),
+            controller: controller,
+            image: Image.asset('assets/08272011229.jpg'),
           ),
         ),
         bottomNavigationBar: _buildButtons(),

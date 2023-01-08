@@ -143,7 +143,7 @@ class CropController extends ValueNotifier<_CropControllerValue> {
       {ui.FilterQuality quality = FilterQuality.high}) async {
     return Image(
       image: UiImageProvider(await croppedBitmap(quality: quality)),
-      fit: BoxFit.contain,
+      fit: BoxFit.cover,
     );
   }
 }
