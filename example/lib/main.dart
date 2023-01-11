@@ -32,22 +32,25 @@ class _MyHomePageState extends State<MyHomePage> {
   );
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: CropImage(
+          alwaysShowThirdLines: false,
+          isCropSizeChangable: false,
+          controller: controller,
+          imageSize: Size(size.width, size.height),
+          image: Image.asset('assets/08272011229.jpg'),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(6.0),
-          child: CropImage(
-            alwaysShowThirdLines: false,
-            isCropSizeChangable: false,
-            cropSize: Size(50, 50),
-            controller: controller,
-            image: Image.asset('assets/08272011229.jpg'),
-          ),
-        ),
-        bottomNavigationBar: _buildButtons(),
-      );
+      ),
+      bottomNavigationBar: _buildButtons(),
+    );
+  }
 
   Widget _buildButtons() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

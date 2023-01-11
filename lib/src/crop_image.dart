@@ -68,7 +68,7 @@ class CropImage extends StatefulWidget {
   final bool isCropSizeChangable;
 
   /// if isCropSizeChangable is false then this value will be used as crop size
-  final Size cropSize;
+  final Size imageSize;
 
   const CropImage(
       {Key? key,
@@ -83,7 +83,7 @@ class CropImage extends StatefulWidget {
       this.onCrop,
       this.minimumImageSize = 100,
       this.isCropSizeChangable = true,
-      this.cropSize = const Size(100, 100)})
+      this.imageSize = const Size(100, 100)})
       : assert(gridCornerSize > 0, 'gridCornerSize cannot be zero'),
         assert(gridThinWidth > 0, 'gridThinWidth cannot be zero'),
         assert(gridThickWidth > 0, 'gridThickWidth cannot be zero'),
@@ -174,9 +174,13 @@ class _CropImageState extends State<CropImage> {
   @override
   Widget build(BuildContext context) => Stack(
         children: [
-          Image(
-            image: widget.image.image,
-            fit: BoxFit.cover,
+          SizedBox(
+            height: widget.imageSize.height,
+            width: widget.image.width,
+            child: Image(
+              image: widget.image.image,
+              fit: BoxFit.cover,
+            ),
           ),
           Positioned.fill(
             child: GestureDetector(
